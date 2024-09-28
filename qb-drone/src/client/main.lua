@@ -172,9 +172,13 @@ Drones.SpawnDrone = function(drone_data)
   if Config.DroneSounds then
     PlaySoundFromEntity(Drones.SoundID, "Flight_Loop", drone, "DLC_BTL_Drone_Sounds", true, 0) 
   end
-
+  
+  SetEntityHealth(drone, 1)
+  print(GetEntityHealth(drone))
+  
   DoScreenFadeIn(500)
   Drones.DroneControl(drone_data, drone, cam)
+  
 end
 
 local tab, temp = nil, false

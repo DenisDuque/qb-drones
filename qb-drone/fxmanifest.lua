@@ -5,9 +5,7 @@ ui_page 'src/nui/dronemenu.html'
 
 client_scripts {
   'config.lua',
-  'src/client/scaleforms.lua',
-  'src/client/functions.lua',
-  'src/client/main.lua',
+  'src/client/*.lua',
 }
 
 server_scripts {
