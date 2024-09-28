@@ -12,4 +12,4 @@ LSPD Drone: ch_prop_casino_drone_02a
 ## Implementar
 1. Cambiar controles de cámara de tecla a ratón ✅
 2. Animación de dejar dron en el suelo
-3. Vida y destruir
+3. Vida y destruir ✅

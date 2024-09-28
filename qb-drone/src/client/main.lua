@@ -172,9 +172,8 @@ Drones.SpawnDrone = function(drone_data)
   if Config.DroneSounds then
     PlaySoundFromEntity(Drones.SoundID, "Flight_Loop", drone, "DLC_BTL_Drone_Sounds", true, 0) 
   end
-  
-  SetEntityHealth(drone, 1)
-  print(GetEntityHealth(drone))
+
+  SetEntityHealth(drone, 100)
   
   DoScreenFadeIn(500)
   Drones.DroneControl(drone_data, drone, cam)
@@ -240,6 +239,17 @@ Drones.DroneControl = function(drone_data, drone, camera)
     DisableAllControlActions(0)
     SetEntityNoCollisionEntity(ply_ped, drone, true)
 
+    --
+    -- Health
+    --
+    local health = GetEntityHealth(drone)
+    local maxHealth = 100
+    if health < maxHealth then
+      QBCore.Functions.Notify('Drone damaged! Disconnecting...', 'error')
+      Drones.Disconnect(drone, drone_data, true)
+      Drones.DestroyCam(camera)
+      return
+    end
     --
     -- Boost
     --
