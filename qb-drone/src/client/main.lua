@@ -236,8 +236,6 @@ Drones.DroneControl = function(drone_data, drone, camera)
     DisableAllControlActions(0)
     SetEntityNoCollisionEntity(ply_ped, drone, true)
 
-
-
     --
     -- Boost
     --
@@ -293,30 +291,49 @@ Drones.DroneControl = function(drone_data, drone, camera)
     --
     -- Cam Rotation
     --
+    local minRotationX = -70 -- Limite inferior
+    local maxRotationX = 45 -- Limite superior
+    local mouseSensitivity = 5.0
 
+    -- Cam Rotation usando el movimiento Y del ratón
+    local mouseY = GetDisabledControlNormal(0, 2) -- 2 es el control para el movimiento en el eje Y del ratón
 
-    if IsDisabledControlPressed(0,Config.Controls.Drone["camera"].codes[1]) then
-      camera_rotation = camera_rotation - (vector3(1.0,0.0,0.0) / math.max(2,zoom))
+    -- Aplicar el movimiento del ratón a la rotación de la cámara
+    camera_rotation = camera_rotation + vector3(-mouseY * mouseSensitivity, 0.0, 0.0)
+
+    -- Limitar la rotación de la cámara para que no se invierta
+    if camera_rotation.x < minRotationX then
+        camera_rotation = vector3(minRotationX, camera_rotation.y, camera_rotation.z)
+    elseif camera_rotation.x > maxRotationX then
+        camera_rotation = vector3(maxRotationX, camera_rotation.y, camera_rotation.z)
     end
 
-    if IsDisabledControlPressed(0,Config.Controls.Drone["camera"].codes[2]) then
-      camera_rotation = camera_rotation + (vector3(1.0,0.0,0.0) / math.max(2,zoom))
-    end
 
     --
     -- Drone Heading
     --
-    if IsDisabledControlPressed(0,Config.Controls.Drone["heading"].codes[1]) then
-      rotation_momentum = math.max(-1.5,rotation_momentum - 0.02)
-    elseif IsDisabledControlPressed(0,Config.Controls.Drone["heading"].codes[2]) then
-      rotation_momentum = math.min(1.5,rotation_momentum + 0.02)
-    else
-      if rotation_momentum > 0.0 then
-        rotation_momentum = math.max(0.0,rotation_momentum - 0.04)
-      elseif rotation_momentum < 0.0 then
-        rotation_momentum = math.min(0.0,rotation_momentum + 0.04)
-      end
+
+    -- Sensibilidad del ratón para el heading
+    local mouseSensitivityHeading = 3.0
+
+    -- Obtener el movimiento en el eje X del ratón
+    local mouseX = GetDisabledControlNormal(0, 1) -- 1 es el control para el movimiento en el eje X del ratón
+
+    -- Invertir el movimiento del ratón para corregir la dirección del giro
+    rotation_momentum = -mouseX * mouseSensitivityHeading
+
+    -- Limitar el momentum de rotación para que no sea excesivo
+    rotation_momentum = math.min(1.5, math.max(-1.5, rotation_momentum))
+
+    -- Ajustes para suavizar el movimiento cuando el ratón esté quieto
+    if math.abs(rotation_momentum) > 0.0 then
+        if rotation_momentum > 0.0 then
+            rotation_momentum = math.max(0.0, rotation_momentum - 0.04) -- Ralentizar cuando hay momentum positivo
+        elseif rotation_momentum < 0.0 then
+            rotation_momentum = math.min(0.0, rotation_momentum + 0.04) -- Ralentizar cuando hay momentum negativo
+        end
     end
+
 
     --
     -- Zoom
