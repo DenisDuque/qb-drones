@@ -410,7 +410,7 @@ Drones.DroneControl = function(drone_data, drone, camera)
     --
     if IsDisabledControlPressed(0,Config.Controls.Drone["home"].codes[1]) then
       -- ShowHelpNotification("Eve dönülüyor")
-      QBCore.Functions.Notify('returning home')
+      QBCore.Functions.Notify('Returning home')
       PointCamAtEntity(camera,PlayerPedId(),0.0,0.0,0.0,true)
 
       local continue_flying = false
@@ -509,14 +509,11 @@ Drones.Disconnect = function(drone, drone_data, destroy)
   local drone_pos = GetEntityCoords(drone)
 
   if not destroy and Vdist(drone_pos, ply_pos) <= 10.0 then
-    -- ShowHelpNotification("Drone geri döndü")
     QBCore.Functions.Notify('The drone is back')
     TriggerServerEvent("Drones:Back", drone_data)
   elseif destroy then
-    -- ShowHelpNotification("Drone yok oldu")
     QBCore.Functions.Notify("The drone disappeared")
   else
-    -- ShowHelpNotification("Drone Bağlantısı Kesildi")
     QBCore.Functions.Notify("Drone Disconnected")
     local pos = GetGroundZ(drone_pos) + vector3(0.0,0.0,0.8)
     TriggerServerEvent("Drones:Disconnect", GetEntityModel(drone), drone_data, pos)
@@ -556,15 +553,9 @@ Drones.DropDrone = function(drone, drone_data, pos)
   droneDropped_data = drone_data
 end
 
-
 --Citizen.CreateThread(Drones.Init)
 
 RegisterNetEvent("Drones:UseDrone")
 AddEventHandler("Drones:UseDrone", Drones.Use)
 RegisterNetEvent("Drones:DropDrone")
 AddEventHandler("Drones:DropDrone", Drones.DropDrone)
-
-RegisterCommand('drone1', function()
-  local drone_data = Config.Drones[2]
-  Drones.Use(drone_data)
-end, false)

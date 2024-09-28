@@ -231,7 +231,7 @@ Config = {
         text = "heading",
       },
       ["height"] = {
-        codes = {36,21},
+        codes = {21,22},
         text = "height",
       },
       ["camera"] = {
