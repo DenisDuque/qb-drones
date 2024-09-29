@@ -538,8 +538,7 @@ end
 Drones.Disconnect = function(drone, drone_data, destroy)
   local ply_pos   = GetEntityCoords(PlayerPedId())
   local drone_pos = GetEntityCoords(drone)
-
-  if not destroy and Vdist(drone_pos, ply_pos) <= 10.0 then
+  if not destroy and not drone_data.singleuse and Vdist(drone_pos, ply_pos) <= 10.0 then
     QBCore.Functions.Notify('The drone is back')
     TriggerServerEvent("Drones:Back", drone_data)
   elseif destroy then

@@ -49,7 +49,8 @@ Config = {
         tazer       = false,  -- tazer 
         explosive   = false,  -- explosion
       },
-      restrictions = {},          -- enter job names in here (e.g: {'police','mechanic'}) to restrict the drone purchase to these jobs only, or leave it empty (e.g: {}) for no job restrictions.
+      restrictions = {},-- enter job names in here (e.g: {'police','mechanic'}) to restrict the drone purchase to these jobs only, or leave it empty (e.g: {}) for no job restrictions.
+      singleuse = false,
       -- bannerUrl = "banner1.png";  -- set the banner image to display at the shop while previewing this drone.
     },
 
@@ -72,144 +73,43 @@ Config = {
         infared     = true,
         nightvision = true,
         boost       = false,
-        tazer       = true,
+        tazer       = false,
         explosive   = false,
       },
       restrictions = {},
+      singleuse = false,
       bannerUrl = "banner2.png";
     },
 
-    -- [3] = {
-    --   label = "Basit Drone 3",
-    --   name = "drone_flyer_3",
-    --   public = true,
-    --   price = 10000,
-    --   model = GetHashKey('ch_prop_arcade_drone_01c'),
-    --   stats = {
-    --     speed   = 1.5,
-    --     agility = 0.5,
-    --     range   = 100.0,
+    [3] = {
+      label = "Nano Drone",                               -- Visible text.
+      name = "drone_nano",                                -- Item name.
+      public = true,                                         -- Can be used by anybody?
+      price = 10000,                                          -- Price
+      model = GetHashKey('ch_prop_arcade_drone_01b'),        -- Model
+      stats = {
+        speed   = 1.0,               -- max speed multiplier
+        agility = 1.0,               -- acceleration/deceleration multiplier
+        range   = 100.0,             -- range (drone display begins fading out when leaving range)
 
-    --     maxSpeed    = 2,
-    --     maxAgility  = 2,
-    --     maxRange    = 200,
-    --   },
-    --   abilities = {
-    --     infared     = false,
-    --     nightvision = false,
-    --     boost       = false,
-    --     tazer       = false,
-    --     explosive   = false,
-    --   },
-    --   restrictions = {},
-    --   bannerUrl = "banner3.png";
-    -- },
-
-    -- [4] = {
-    --   label = "Gelişmiş Drone 1",
-    --   name = "drone_flyer_4",
-    --   public = true,
-    --   price = 25000,
-    --   model = GetHashKey('ch_prop_arcade_drone_01d'),
-    --   stats = {
-    --     speed   = 1.5,
-    --     agility = 1.5,
-    --     range   = 300.0,
-
-    --     maxSpeed    = 2,
-    --     maxAgility  = 2,
-    --     maxRange    = 200,
-    --   },
-    --   abilities = {
-    --     infared     = true,
-    --     nightvision = true,
-    --     boost       = true,
-    --     tazer       = false,
-    --     explosive   = false,
-    --   },
-    --   restrictions = {},
-    --   bannerUrl = "banner4.png";
-    -- },
-
-    -- [5] = {
-    --   label = "Gelişmiş Drone 2",
-    --   name = "drone_flyer_5",
-    --   public = true,
-    --   price = 25000,
-    --   model = GetHashKey('ch_prop_arcade_drone_01e'),
-    --   stats = {
-    --     speed   = 2.0,
-    --     agility = 1.0,
-    --     range   = 300.0,
-
-    --     maxSpeed    = 2,
-    --     maxAgility  = 2,
-    --     maxRange    = 500,
-    --   },
-    --   abilities = {
-    --     infared     = true,
-    --     nightvision = true,
-    --     boost       = true,
-    --     tazer       = false,
-    --     explosive   = false,
-    --   },
-    --   restrictions = {},
-    --   bannerUrl = "banner3.png";
-    -- },
-
-    -- [6] = {
-    --   label = "Gelişmiş Drone 3",
-    --   name = "drone",
-    --   public = true,
-    --   price = 25000,
-    --   model = GetHashKey('ch_prop_casino_drone_02a'),
-    --   stats = {
-    --     speed   = 1.0,
-    --     agility = 2.0,
-    --     range   = 300.0,
-
-    --     maxSpeed    = 2,
-    --     maxAgility  = 2,
-    --     maxRange    = 500,
-    --   },
-    --   abilities = {
-    --     infared     = true,
-    --     nightvision = true,
-    --     boost       = true,
-    --     tazer       = false,
-    --     explosive   = false,
-    --   },
-    --   restrictions = {},
-    --   bannerUrl = "banner2.png";
-    -- },
-
-    -- [7] = {
-    --   label = "Polis Drone",
-    --   name = "drone_flyer_7",
-    --   public = false,
-    --   price = 10000,
-    --   model = GetHashKey('ch_prop_casino_drone_02a'),
-    --   stats = {
-    --     speed   = 1.0,
-    --     agility = 1.0,
-    --     range   = 500.0,
-
-    --     maxSpeed    = 2,
-    --     maxAgility  = 2,
-    --     maxRange    = 500,
-    --   },
-    --   abilities = {
-    --     infared     = true,
-    --     nightvision = true,
-    --     boost       = true,
-    --     tazer       = true,
-    --     explosive   = false,
-    --   },
-    --   restrictions = {
-    --     'police'
-    --   },
-    --   bannerUrl = "banner1.png";
-    -- },
+        -- Max Stats:
+        -- Max stats are displayed in the NUI window. You can categorize your drones by sharing max stats across similar drones (e.g: basic drone 1,2,3), and changing them for others (e.g: advanced drone 1,2,3).
+        -- or you can choose to display the same max stats across all drones to have a fair comparison chart.
+        maxSpeed    = 2,             
+        maxAgility  = 2,
+        maxRange    = 200,
+      },
+      abilities = {
+        infared     = false,  -- infared/heat-vision
+        nightvision = false,  -- nightvision
+        boost       = false,  -- boost
+        tazer       = false,  -- tazer 
+        explosive   = false,  -- explosion
+      },
+      restrictions = {},-- enter job names in here (e.g: {'police','mechanic'}) to restrict the drone purchase to these jobs only, or leave it empty (e.g: {}) for no job restrictions.
+      singleuse = true,
+      -- bannerUrl = "banner1.png";  -- set the banner image to display at the shop while previewing this drone.
+    },
   },
 
   Controls = {
