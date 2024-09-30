@@ -5,14 +5,12 @@ LSPD Drone: ch_prop_casino_drone_02a
 # TODO
 
 ## Bugs
-1. Revisar interacción con voicechat.
-2. Revisar interacción con el chat.
-3. Revisar interaccion de animaciones en vehiculos. ✅
-4. Errores de consola.
+1. Revisar interacción con voicechat.✅
+2. Revisar interaccion de animaciones en vehiculos.✅
+3. Errores de consola.
 
 ## Implementar
 1. Cambiar controles de cámara de tecla a ratón ✅
-2. Animación de dejar dron en el suelo
-3. Vida y destruir ✅
-4. Efecto de destruir
-5. Dron de un solo uso
+2. Vida y destruir ✅
+3. Efecto de destruir
+4. Dron de un solo uso✅

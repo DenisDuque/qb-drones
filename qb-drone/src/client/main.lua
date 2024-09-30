@@ -126,9 +126,22 @@ Drones.SpawnDrone = function(drone_data)
   Wait(500)
 
   local drone_model = drone_data.model
-  local ply_ped     = PlayerPedId()
-  local ply_pos     = GetEntityCoords(ply_ped)
-  local drone       = Drones.CreateObject((ply_pos), drone_model, 1)
+  local ply_ped = PlayerPedId()
+  local ply_pos = GetEntityCoords(ply_ped)
+  local ply_fwd = GetEntityForwardVector(ply_ped)
+
+  local distance = 1.0 -- Distance from the player
+  local spawn_pos = ply_pos + (ply_fwd * distance)
+
+  local in_vehicle = IsPedInAnyVehicle(ply_ped, false)
+  if in_vehicle then
+    local vehicle = GetVehiclePedIsIn(ply_ped, false)
+    local veh_pos = GetEntityCoords(vehicle)
+    local veh_height = GetEntityHeightAboveGround(vehicle)
+    spawn_pos = vector3(veh_pos.x, veh_pos.y, veh_pos.z + veh_height + 2.0)
+  end
+
+  local drone       = Drones.CreateObject((spawn_pos), drone_model, 1)
   local cam         = Drones.CreateCam(drone)
 
   SetEntityAsMissionEntity(drone, true, true)
@@ -328,7 +341,7 @@ Drones.DroneControl = function(drone_data, drone, camera)
     --
 
     -- Sensibilidad del ratón para el heading
-    local mouseSensitivityHeading = 3.0
+    local mouseSensitivityHeading = 7.0
 
     -- Obtener el movimiento en el eje X del ratón
     local mouseX = GetDisabledControlNormal(0, 1) -- 1 es el control para el movimiento en el eje X del ratón
@@ -347,7 +360,6 @@ Drones.DroneControl = function(drone_data, drone, camera)
             rotation_momentum = math.min(0.0, rotation_momentum + 0.04) -- Ralentizar cuando hay momentum negativo
         end
     end
-
 
     --
     -- Zoom
