@@ -1,23 +1,11 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local Drones = {}
+
 Drones.SceneModels = {
   drone   = GetHashKey('ch_prop_arcade_drone_01a'),
-  laptop  = GetHashKey('hei_prop_hst_laptop')
+  laptop  = GetHashKey('prop_cs_tablet')
 }
-
-Drones.SceneAnimations = {
-  [1] = {
-    laptop  = 'hack_enter_laptop',
-    drone   = 'hack_enter_card',
-    bag     = 'hack_enter_suit_bag',
-  },
-  [2] = {
-    laptop  = 'hack_loop_laptop',
-    drone   = 'hack_loop_card',
-    bag     = 'hack_loop_suit_bag',
-  }
-}
-
 
 Drones.LoadModel = function(hash)
   RequestModel(hash)
@@ -25,12 +13,6 @@ Drones.LoadModel = function(hash)
       Wait(0) 
   end
   print("Model loaded: " .. hash)  -- Debug log
-end
-
-
-Drones.LoadDict = function(dict)
-  RequestAnimDict(dict)
-  while not HasAnimDictLoaded(dict) do Wait(0); end
 end
 
 Drones.CreateObject = function(pos, hash, net)
@@ -175,7 +157,7 @@ Drones.SpawnDrone = function(drone_data)
   Scaleforms.PopInt(Drones.DroneScaleform,"SET_TRANQUILIZE_PERCENTAGE", 100)
   Scaleforms.PopInt(Drones.DroneScaleform,"SET_EMP_PERCENTAGE", 100)
 
-  Scaleforms.PopMulti(Drones.DroneScaleform,"SET_ZOOM_LABEL", 0, "DRONE_ZOOM_1")
+  Scaleforms.PopMulti(Drones.DroneScaleform,"SET_ZOOM_LABEL", 0, "Zoom")
   Scaleforms.PopMulti(Drones.DroneScaleform,"SET_ZOOM_LABEL", 1, "")
   Scaleforms.PopMulti(Drones.DroneScaleform,"SET_ZOOM_LABEL", 2, "DRONE_ZOOM_2")
   Scaleforms.PopMulti(Drones.DroneScaleform,"SET_ZOOM_LABEL", 3, "")
@@ -196,7 +178,7 @@ end
 local tab, temp = nil, false
 
 function attachObject()
-	tab = CreateObject(GetHashKey("prop_cs_tablet"), 0, 0, 0, true, true, true)
+	tab = CreateObject(Drones.SceneModels["laptop"], 0, 0, 0, true, true, true)
 	AttachEntityToEntity(tab, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 28422), -0.05, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
 end
 
@@ -251,7 +233,6 @@ Drones.DroneControl = function(drone_data, drone, camera)
 
     DisableAllControlActions(0)
     SetEntityNoCollisionEntity(ply_ped, drone, true)
-
     --
     -- Health
     --
@@ -276,7 +257,6 @@ Drones.DroneControl = function(drone_data, drone, camera)
       end
       Scaleforms.PopInt(Drones.DroneScaleform, "SET_BOOST_PERCENTAGE", math.floor(boost))
     end
-
     --
     -- Drone Movement
     --
@@ -588,12 +568,15 @@ Drones.Use = function(drone_data)
   ClearPedTasks(PlayerPedId())
 end
 
-Drones.DropDrone = function(drone, drone_data, pos)
-  Drones.CreateObject(pos, drone, 1)
-  droneDropped = true
-  droneDropped_pos = pos
-  droneDropped_data = drone_data
+Drones.DropDrone = function(drone, model, pos)
+  local groundHeight = GetGroundZ(pos)
+  
+  local positionOnGround = vector3(pos.x, groundHeight, pos.z)
+
+  Drones.CreateObject(positionOnGround, model, 1)
+  
 end
+
 
 --Citizen.CreateThread(Drones.Init)
 

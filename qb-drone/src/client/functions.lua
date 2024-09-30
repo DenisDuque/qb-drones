@@ -1,4 +1,3 @@
-Drones        = {}
 Scenes        = mLibs:SynchronisedScene()
 Scaleforms    = mLibs:Scaleforms()
 
