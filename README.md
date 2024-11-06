@@ -1,6 +1,6 @@
 # Drone Script for FiveM (QBCore)
 
-This script allows players to control drones in a **FiveM** server using the **QBCore** framework. The drone can be used for a variety of purposes such as surveillance, exploration, or fun interactions with other players in the game world.
+This script allows players to control drones in a **FiveM** server using the **QBCore** framework. The drone can be used for a variety of purposes such as cinematics, exploration, or fun interactions with other players in the game.
 
 ## Features
 
