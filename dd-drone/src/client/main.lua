@@ -77,8 +77,8 @@ Drones.CreateControls = function(abilities)
       table.insert(controls,Config.Controls.Drone["nightvision"])
     end
 
-    if abilities.infared then
-      table.insert(controls,Config.Controls.Drone["infared"])
+    if abilities.infrared then
+      table.insert(controls,Config.Controls.Drone["infrared"])
     end
 
     if abilities.tazer then
@@ -177,12 +177,12 @@ end
 
 local tab, temp = nil, false
 
-function attachObject()
+local function attachObject()
 	tab = CreateObject(Drones.SceneModels["laptop"], 0, 0, 0, true, true, true)
 	AttachEntityToEntity(tab, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 28422), -0.05, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
 end
 
-function stopAnim()
+local function stopAnim()
 	temp = false
 	StopAnimTask(PlayerPedId(), "amb@code_human_in_bus_passenger_idles@female@tablet@idle_a", "idle_a", 8.0)
 
@@ -194,7 +194,7 @@ function stopAnim()
 	FreezeEntityPosition(PlayerPedId(), false)
 end
 
-function startAnim()
+local function startAnim()
   if not temp then
 		RequestAnimDict("amb@code_human_in_bus_passenger_idles@female@tablet@idle_a")
 		while not HasAnimDictLoaded("amb@code_human_in_bus_passenger_idles@female@tablet@idle_a") do
@@ -242,6 +242,14 @@ Drones.DroneControl = function(drone_data, drone, camera)
       QBCore.Functions.Notify('Drone damaged! Disconnecting...', 'error')
       Drones.Disconnect(drone, drone_data, true)
       Drones.DestroyCam(camera)
+      
+      -- Add particle effect if you want
+      
+      -- local dronePos = GetEntityCoords(drone)
+      -- UseParticleFxAsset("core")
+      -- StartParticleFxNonLoopedAtCoord("ent_amb_sparking_wires", dronePos.x, dronePos.y, dronePos.z, 0.0, 0.0, 0.0, 1.0, false, false, false)
+      -- PlaySoundFromCoord(-1, "spooky_rattle", dronePos.x, dronePos.y, dronePos.z, "DLC_HALLOWEEN_FVJ_Sounds", false, 10, false)
+      
       return
     end
     --
@@ -298,17 +306,17 @@ Drones.DroneControl = function(drone_data, drone, camera)
     --
     -- Cam Rotation
     --
-    local minRotationX = -70 -- Limite inferior
-    local maxRotationX = 45 -- Limite superior
+    local minRotationX = -70 -- Bottom limit
+    local maxRotationX = 45 -- Top limit
     local mouseSensitivity = 5.0
 
-    -- Cam Rotation usando el movimiento Y del ratón
-    local mouseY = GetDisabledControlNormal(0, 2) -- 2 es el control para el movimiento en el eje Y del ratón
+    -- Cam Rotation using Y mouse movement
+    local mouseY = GetDisabledControlNormal(0, 2)
 
-    -- Aplicar el movimiento del ratón a la rotación de la cámara
+    -- Apply the mouse movement to the camera rotation
     camera_rotation = camera_rotation + vector3(-mouseY * mouseSensitivity, 0.0, 0.0)
 
-    -- Limitar la rotación de la cámara para que no se invierta
+    -- Limit the camera rotation so it doesn't invert
     if camera_rotation.x < minRotationX then
         camera_rotation = vector3(minRotationX, camera_rotation.y, camera_rotation.z)
     elseif camera_rotation.x > maxRotationX then
@@ -320,24 +328,24 @@ Drones.DroneControl = function(drone_data, drone, camera)
     -- Drone Heading
     --
 
-    -- Sensibilidad del ratón para el heading
+    -- Mouse sensitivity for heading
     local mouseSensitivityHeading = 7.0
 
-    -- Obtener el movimiento en el eje X del ratón
-    local mouseX = GetDisabledControlNormal(0, 1) -- 1 es el control para el movimiento en el eje X del ratón
+    -- Get the mouse movement on the X axis
+    local mouseX = GetDisabledControlNormal(0, 1)
 
-    -- Invertir el movimiento del ratón para corregir la dirección del giro
+    -- Invert the mouse movement to correct the turn direction
     rotation_momentum = -mouseX * mouseSensitivityHeading
 
-    -- Limitar el momentum de rotación para que no sea excesivo
+    -- Limit the rotation momentum so it’s not excessive
     rotation_momentum = math.min(1.5, math.max(-1.5, rotation_momentum))
 
-    -- Ajustes para suavizar el movimiento cuando el ratón esté quieto
+    -- Settings to smooth the movement when the mouse is stationary
     if math.abs(rotation_momentum) > 0.0 then
         if rotation_momentum > 0.0 then
-            rotation_momentum = math.max(0.0, rotation_momentum - 0.04) -- Ralentizar cuando hay momentum positivo
+            rotation_momentum = math.max(0.0, rotation_momentum - 0.04)
         elseif rotation_momentum < 0.0 then
-            rotation_momentum = math.min(0.0, rotation_momentum + 0.04) -- Ralentizar cuando hay momentum negativo
+            rotation_momentum = math.min(0.0, rotation_momentum + 0.04)
         end
     end
 
@@ -372,14 +380,14 @@ Drones.DroneControl = function(drone_data, drone, camera)
     end
 
     --
-    -- Infared
+    -- infrared
     --
-    if drone_data.abilities.infared and IsDisabledControlJustPressed(0,Config.Controls.Drone["infared"].codes[1]) then
-      if not InfaredEnabled then
-        InfaredEnabled = true
+    if drone_data.abilities.infrared and IsDisabledControlJustPressed(0,Config.Controls.Drone["infrared"].codes[1]) then
+      if not InfraredEnabled then
+        InfraredEnabled = true
         SetSeethrough(true)
       else
-        InfaredEnabled = false
+        InfraredEnabled = false
         SetSeethrough(false)
       end
     end
@@ -432,7 +440,6 @@ Drones.DroneControl = function(drone_data, drone, camera)
     -- Return Home
     --
     if IsDisabledControlPressed(0,Config.Controls.Drone["home"].codes[1]) then
-      -- ShowHelpNotification("Eve dönülüyor")
       QBCore.Functions.Notify('Returning home')
       PointCamAtEntity(camera,PlayerPedId(),0.0,0.0,0.0,true)
 

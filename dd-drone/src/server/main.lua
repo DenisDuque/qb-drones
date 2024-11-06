@@ -21,8 +21,8 @@ QBCore.Functions.CreateUseableItem("drone", function(source)
 
     if xPlayer.Functions.GetItemByName('drone') then
         local drone_data = Config.Drones[1]
-        TriggerClientEvent("Drones:UseDrone", source, drone_data) -- Llamada al cliente
-        xPlayer.Functions.RemoveItem('drone', 1) -- Remover ítem
+        TriggerClientEvent("Drones:UseDrone", source, drone_data)
+        xPlayer.Functions.RemoveItem('drone', 1)
         TriggerClientEvent('QBCore:Notify', source, 'Drone deployed!', 'success') 
     else
         TriggerClientEvent('QBCore:Notify', source, 'You do not have a drone!', 'error') 
@@ -34,8 +34,8 @@ QBCore.Functions.CreateUseableItem("drone_lspd", function(source)
 
     if xPlayer.Functions.GetItemByName('drone_lspd') then
         local drone_data = Config.Drones[2]
-        TriggerClientEvent("Drones:UseDrone", source, drone_data) -- Llamada al cliente
-        xPlayer.Functions.RemoveItem('drone_lspd', 1) -- Remover ítem
+        TriggerClientEvent("Drones:UseDrone", source, drone_data)
+        xPlayer.Functions.RemoveItem('drone_lspd', 1)
         TriggerClientEvent('QBCore:Notify', source, 'Drone deployed!', 'success') 
     else
         TriggerClientEvent('QBCore:Notify', source, 'You do not have a drone!', 'error') 
@@ -47,8 +47,8 @@ QBCore.Functions.CreateUseableItem("drone_nano", function(source)
 
     if xPlayer.Functions.GetItemByName('drone_nano') then
         local drone_data = Config.Drones[3]
-        TriggerClientEvent("Drones:UseDrone", source, drone_data) -- Llamada al cliente
-        xPlayer.Functions.RemoveItem('drone_nano', 1) -- Remover ítem
+        TriggerClientEvent("Drones:UseDrone", source, drone_data)
+        xPlayer.Functions.RemoveItem('drone_nano', 1)
         TriggerClientEvent('QBCore:Notify', source, 'Drone deployed!', 'success') 
     else
         TriggerClientEvent('QBCore:Notify', source, 'You do not have a drone!', 'error') 
